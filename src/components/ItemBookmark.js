@@ -3,6 +3,7 @@ import React from 'react';
 import {Receipt21, Clock, Message} from 'iconsax-react-native';
 import FastImage from 'react-native-fast-image';
 import { fontType, colors } from '../theme';
+import {useNavigation} from '@react-navigation/native';
 
 const truncateTextByWords = (text, maxWords) => {
   const words = text.split(' ');
@@ -13,8 +14,9 @@ const truncateTextByWords = (text, maxWords) => {
 }
 
 const ItemBookmark = ({item, onPress, variant}) => {
+  const navigation = useNavigation();
   return (
-      <TouchableOpacity style={styles.cardItem} onPress={()=>{}}>
+      <TouchableOpacity style={styles.cardItem} onPress={()=>navigation.navigate('BlogDetail', {blogId: item.id})}>
         <FastImage
           style={styles.cardImage}
           source={{
