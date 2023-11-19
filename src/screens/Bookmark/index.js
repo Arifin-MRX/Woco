@@ -43,5 +43,7 @@ const styles = StyleSheet.create({
     fontFamily: fontType['Pjs-ExtraBold'],
     color: colors.black(),
     letterSpacing: -0.3,
+    
   },
+
 });
