@@ -1,10 +1,17 @@
-import {ScrollView, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import {Setting2} from 'iconsax-react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+} from 'react-native';
+import {Setting2, Edit} from 'iconsax-react-native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import FastImage from 'react-native-fast-image';
 import {ProfileData, BlogList} from '../../../data';
 import {ItemSmall} from '../../components';
-import { fontType, colors } from '../../theme';
+import {fontType, colors} from '../../theme';
 
 const formatNumber = number => {
   if (number >= 1000000000) {
@@ -21,6 +28,7 @@ const formatNumber = number => {
 
 const data = BlogList.slice(5);
 const Profile = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -71,12 +79,17 @@ const Profile = () => {
             <Text style={profile.buttonText}>Edit Profile</Text>
           </TouchableOpacity>
         </View>
-        <View style={{paddingVertical: 10, gap:10}}>
+        <View style={{paddingVertical: 10, gap: 10}}>
           {data.map((item, index) => (
             <ItemSmall item={item} key={index} />
           ))}
         </View>
       </ScrollView>
+      <TouchableOpacity
+          style={styles.floatingButton}
+          onPress={() => navigation.navigate('AddBlog')}>
+          <Edit color={colors.white()} variant="Linear" size={20} />
+        </TouchableOpacity>
     </View>
   );
 };
@@ -102,6 +115,23 @@ const styles = StyleSheet.create({
     fontFamily: fontType['Pjs-ExtraBold'],
     color: colors.black(),
   },
+  floatingButton: {
+    backgroundColor: colors.blue(),
+    padding: 15,
+    position: 'absolute',
+    bottom: 24,
+    right: 24,
+    borderRadius: 10,
+    shadowColor: colors.blue(),
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 4.65,
+
+    elevation: 8,
+  },
 });
 const profile = StyleSheet.create({
   pic: {width: 100, height: 100, borderRadius: 15},
@@ -109,7 +139,7 @@ const profile = StyleSheet.create({
     color: colors.black(),
     fontSize: 20,
     fontFamily: fontType['Pjs-Bold'],
-    textTransform:'capitalize'
+    textTransform: 'capitalize',
   },
   info: {
     fontSize: 12,
