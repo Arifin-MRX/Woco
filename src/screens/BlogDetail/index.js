@@ -1,6 +1,21 @@
-import {StyleSheet, Text, View, ScrollView, TouchableOpacity, Animated, ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+  Animated,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
-import {ArrowLeft, Like1, Receipt21, Message, Share, More} from 'iconsax-react-native';
+import {
+  ArrowLeft,
+  Like1,
+  Receipt21,
+  Message,
+  Share,
+  More,
+} from 'iconsax-react-native';
 import {useNavigation} from '@react-navigation/native';
 import FastImage from 'react-native-fast-image';
 import {fontType, colors} from '../../theme';
@@ -9,6 +24,7 @@ import storage from '@react-native-firebase/storage';
 import {formatNumber} from '../../utils/formatNumber';
 import {formatDate} from '../../utils/formatDate';
 import ActionSheet from 'react-native-actions-sheet';
+import auth from '@react-native-firebase/auth';
 
 const BlogDetail = ({route}) => {
   const {blogId} = route.params;
@@ -19,6 +35,7 @@ const BlogDetail = ({route}) => {
   });
   const [loading, setLoading] = useState(true);
   const [selectedBlog, setSelectedBlog] = useState(null);
+  const userId = auth().currentUser.uid;
   const actionSheetRef = useRef(null);
   const openActionSheet = () => {
     actionSheetRef.current?.show();
@@ -63,7 +80,7 @@ const BlogDetail = ({route}) => {
       console.log('Blog deleted!');
       closeActionSheet();
       setSelectedBlog(null);
-      setLoading(false)
+      setLoading(false);
       navigation.navigate('Profile');
     } catch (error) {
       console.error(error);
@@ -101,13 +118,15 @@ const BlogDetail = ({route}) => {
         </TouchableOpacity>
         <View style={{flexDirection: 'row', justifyContent: 'center', gap: 20}}>
           <Share color={colors.grey(0.6)} variant="Linear" size={24} />
-          <TouchableOpacity onPress={openActionSheet}>
-            <More
-              color={colors.grey(0.6)}
-              variant="Linear"
-              style={{transform: [{rotate: '90deg'}]}}
-            />
-          </TouchableOpacity>
+          {userId === selectedBlog?.authorId && (
+            <TouchableOpacity onPress={openActionSheet}>
+              <More
+                color={colors.grey(0.6)}
+                variant="Linear"
+                style={{transform: [{rotate: '90deg'}]}}
+              />
+            </TouchableOpacity>
+          )}
         </View>
       </Animated.View>
       {loading ? (
